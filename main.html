@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="login-container">
+    <h2>Login</h2>
+    <div class="dial-pad">
+        <button class="dial-btn" data-value="1">1</button>
+        <button class="dial-btn" data-value="2">2</button>
+        <button class="dial-btn" data-value="3">3</button>
+        <button class="dial-btn" data-value="4">4</button>
+        <button class="dial-btn" data-value="5">5</button>
+        <button class="dial-btn" data-value="6">6</button>
+        <button class="dial-btn" data-value="7">7</button>
+        <button class="dial-btn" data-value="8">8</button>
+        <button class="dial-btn" data-value="9">9</button>
+        <button class="dial-btn" data-value="0">0</button>
+        <!-- Add more buttons as needed -->
+    </div>
+    <form id="loginForm" action="/login" method="POST">
+        <input type="hidden" id="employeeId" name="employeeId">
+        <button type="submit" id="loginBtn">Login</button>
+    </form>
+</div>
+
+<script>
+    document.querySelectorAll('.dial-btn').forEach(button => {
+        button.addEventListener('click', () => {
+            const value = button.dataset.value;
+            const employeeIdInput = document.getElementById('employeeId');
+            employeeIdInput.value += value;
+        });
+    });
+</script>
+</body>
+</html>
+
+ 
+
+
+</body>
+</html>

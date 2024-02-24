@@ -1,0 +1,68 @@
+<?php include 'db_status.php'; ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Customer</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<script src="add_customer.js"></script>
+<!--<script src="allScripts.js"></script>
+<script src="add_customer.js"></script>
+ Database Connection Status Indicator -->
+<!--<div id="dbStatus"></div>
+<div id="dbStatusIndicator"></div></br>
+ Menu -->
+<div class="menu-container">
+    <a href="../sales/sales.html" class="menu-item">Sales</a>
+    <a href="../view_inventory.html" class="menu-item">View Inventory</a>
+    <a href="../add_product/add_product.html" class="menu-item">Add Product</a>
+    <a href="../view_customers.html" class="menu-item">View Customers</a>
+    <a href="add_customer.html" class="menu-item">Add Customer</a>
+    <a href="transaction_history.html" class="menu-item">Transaction History</a>
+    <a href="reports.html" class="menu-item">Reports</a>
+</div>
+    <h1>Add Customer</h1>
+    <div class="addCustomerContainer">
+        <!-- Form to add a new product -->
+        <form id="addCustomerForm">
+            <label for="firstName">First Name:</label>
+            <input type="text" id="firstName" name="firstName" required>
+
+            <label for="lastName">Last Name:</label>
+            <input type="text" id="lastName" name="lastName" required>
+
+            <label for="contactNumber">Contact Number:</label>
+            <input type="tel" id="contactNumber" name="contactNumber" required>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="street1">Street 1:</label>
+            <input type="text" id="street1" name="street1" >
+
+            <label for="aptNo">Apt No.:</label>
+            <input type="text" id="aptNo" name="aptNo">
+
+            <label for="city">City:</label>
+            <input type="text" id="city" name="city" >
+
+            <label for="state">State:</label>
+            <input type="text" id="state" name="state" >
+
+            <label for="zipCode">Zip Code:</label>
+            <input type="text" id="zipCode" name="zipCode" >
+
+            <label for="birthdate">Birthdate:</label>
+            <input type="text" id="birthdate" name="birthdate" >
+
+            <!-- Button to Add Product -->
+            <button type="button" onclick="addCustomerToDatabase()">Add Customer</button>
+            <!-- Message area to display success or error messages -->
+            <div id="message"></div>
+        </form>
+    </div>
+</body>
+</html>

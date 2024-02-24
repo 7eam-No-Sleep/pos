@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales</title>
+    <link rel="stylesheet" href="../style.css">
+    <audio id="beepSound" src="beep.mp3"></audio>
+</head>
+<script src="sales.js"></script>
+<body>
+<!-- Database Connection Status Indicator
+<div id="dbStatus"></div>
+<div id="dbStatusIndicator"></div></br>-->
+<!--<img src="../images/HB_logo_white.jpg" height="100">
+<span>1102 S. Union St. Suite 4 Phone: 337.469.1466</span>-->
+<!-- Menu -->
+<div class="menu-container">
+    <a href="sales.html" class="menu-item">Sales</a>
+    <a href="../view_inventory.html" class="menu-item">View Inventory</a>
+    <a href="../add_product/add_product.html" class="menu-item">Add Product</a>
+    <a href="../view_customers.html" class="menu-item">View Customers</a>
+    <a href="../add_customer/add_customer.html" class="menu-item">Add Customer</a>
+    <a href="process_return.html" class="menu-item">Process Return</a>
+    <button onclick="window.location.href = '../logout.php'">Logout</button>
+</div>
+
+<div class="sales-container">
+    <!-- Left half for adding items -->
+    <div class="left-half">
+        <!-- Form for adding and removing items -->
+        <form id="salesForm">
+            <!-- New input for customer selection -->
+            <label for="customerSelection">Customer Phone Number:</label>
+            <input type="text" id="customerSelection" name="customerSelection" placeholder="Enter Phone Number">
+            <button type="button" onclick="fetchCustomerDetails()">Fetch Customer</button>
+            <hr>
+            <label for="productIDAdd">Product ID:</label>
+            <input type="number" id="productIDAdd" name="productIDAdd" required>
+            <button type="button" onclick="addItem()">Add Item</button>
+            <button onclick="startScanManually()">Start Scan</button>
+            <hr>
+            <label for="discountReason">Discount Reason:</label>
+            <select id="discountReason" name="discountReason" required>
+                <option value="">Select a reason...</option> <!-- Blank option -->
+                <option value="Teachers">First Responders</option>
+                <option value="First Responders">First Responders</option>
+                <option value="Customer Loyalty">Customer Loyalty</option>
+                <option value="Family">Family</option>
+                <option value="Owners">Owners</option>
+                <option value="Employee">Employee</option>
+                <option value="Damaged Goods">Damaged Goods</option>
+                <option value="Red Line">Red Line</option>
+                <option value="Veterans">Veterans</option>
+            </select>
+            <label for="discountAmount">Discount Amount:</label>
+            <input type="number" id="discountAmount" name="discountAmount" required>
+            <button type="button" onclick="addDiscount()">+ Discount</button>
+            <button type="button" onclick="removeDiscount()">- Discount</button>
+            <hr>
+
+        </form>
+    </div>
+
+    <!-- Right half for displaying receipt -->
+    <div class="right-half">
+        <h3>Proposed Sale Summary</h3>
+        <!-- Display items -->
+        <div id="itemsContainer"></div>
+        <!-- Display running total, item details, and final total -->
+        <div id="receiptItemsContainer">
+            <p>Items Total: $<span id="runningTotal">0.00</span></p>
+            <p>Sales Tax 10%: $<span id="salesTaxTotal">0.00</span></p>
+            <div id="message"></div>
+            <p>Final Total: $<span id="finalTotal">0.00</span></p>
+            <!-- Add sales person field -->
+        </div>
+    </div>
+
+    <!-- Far-right pane for additional content -->
+    <div class="far-right">
+        <p><span id="customerDetails"></span></p>
+        <input type="hidden" id="customerID">
+        <label for="salesPerson" style="display: inline-block;">Sales Person:</label>
+        <input type="text" id="salesPerson" name="salesPerson" placeholder="Employee ID" maxlength="4" style="width: 100px; display: inline-block;"></br>
+        <!-- Buttons for different payment methods -->
+        <button onclick="toggleCashField()">Cash</button>
+        <button onclick="toggleCheckField()">Check</button>
+        <button onclick="toggleCreditDebitField()">Card</button></br></br></br>
+
+        <!-- Cash field -->
+        <div id="cashField" style="display: none;">
+            <label for="cashReceived">Cash Received:</label>
+            <input type="text" id="cashReceived" name="cashReceived">
+            <button onclick="calculateChange()">Calculate Change</button>
+            <p>Change Given: $<span id="changeGiven">0.00</span></p>
+        </div>
+
+        <!-- Check field -->
+        <div id="checkField" style="display: none;">
+            <label for="checkNumber">Check Number:</label>
+            <input type="text" id="checkNumber" name="checkNumber">
+        </div>
+
+        <!-- Credit/Debit fields -->
+        <div id="creditDebitField" style="display: none;">
+            <label for="creditCardNumber">Card Number:</label>
+            <input type="text" id="creditCardNumber" name="creditCardNumber">
+            <label for="expiryDate">Expiry Date:</label>
+            <input type="text" id="expiryDate" name="expiryDate">
+        </div>
+
+        <!-- Buttons to finalize or clear transaction -->
+        <br><button onclick="confirmAndFinalize()">Finalize</button>
+        <button onclick="clearTransaction()">Clear</button>
+        <!-- Camera image display -->
+        <div id="cameraContainer">
+            <video id="cameraFeed" autoplay></video>
+            <!-- Add a dropdown menu to select the camera -->
+            <select  id="cameraSelection" onchange="changeCamera()">
+                <option value="environment">Rear Camera</option>
+                <option value="user">Front Camera</option>
+            </select>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/quagga/dist/quagga.min.js"></script>
+<script src="camera.js"></script>
+</body>
+</html>

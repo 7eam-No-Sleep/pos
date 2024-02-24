@@ -1,0 +1,48 @@
+<?php include 'db_status.php'; ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Inventory</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <script src="allScripts.js"></script>
+	<!-- Database Connection Status Indicator -->
+	<div id="dbStatus"></div>
+	<div id="dbStatusIndicator"></div></br>
+	<!-- Menu -->
+    <div class="menu-container">
+        <a href="sales/sales.html" class="menu-item">Sales</a>
+        <a href="view_inventory.html" class="menu-item">View Inventory</a>
+        <a href="add_product/add_product.html" class="menu-item">Add Product</a>
+        <a href="view_customers.html" class="menu-item">View Customers</a>
+        <a href="add_customer/add_customer.html" class="menu-item">Add Customer</a>
+        <a href="transaction_history.html" class="menu-item">Transaction History</a>
+        <a href="reports.html" class="menu-item">Reports</a>
+    </div>
+    <h1>View Inventory</h1>
+
+
+    <!-- Table Container to display inventory data -->
+    <div class="products-container"></div>
+	        <table id="productsTable">
+            <thead>
+                <tr>
+                    <th>Product ID</th>
+                    <th>Product Name</th>
+                    <th>Category</th>
+                    <th>Description</th>
+					<th>Material</th>
+					<th>Size</th>
+					<th>Color</th>
+                    <th>Cost</th>
+                    <th>Sale Price</th>
+                    <th>Quantity in Stock</th>
+                </tr>
+            </thead>
+            <tbody id="productsBody"></tbody>
+        </table>
+</body>
+</html>

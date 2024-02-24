@@ -1,0 +1,31 @@
+function addProduct() {
+    const productName = document.getElementById('productName').value;
+
+    const productData = {
+        productName: productName,
+        // Add other properties here
+    };
+
+    fetch('backend.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(productData),
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log(data);
+
+        // You can handle success or error messages here and update the UI accordingly
+        if (data.success) {
+            alert(data.message);
+        } else {
+            alert('Error: ' + data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        // Handle errors or display error messages here
+    });
+}

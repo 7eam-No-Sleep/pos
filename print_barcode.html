@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barcode Preview</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Include CSS for styling -->
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.0/dist/JsBarcode.all.min.js"></script>
+    <!-- Include JsBarcode library -->
+</head>
+<body>
+<h1>Barcode Preview</h1>
+<div class="menu-container">
+    <!-- Menu items -->
+    <a href="sales/sales.html" class="menu-item">Sales</a>
+    <a href="view_inventory.html" class="menu-item">View Inventory</a>
+    <a href="add_product/add_product.html" class="menu-item">Add Product</a>
+    <a href="view_customers.html" class="menu-item">View Customers</a>
+    <a href="add_customer/add_customer.html" class="menu-item">Add Customer</a>
+    <a href="transaction_history.html" class="menu-item">Transaction History</a>
+    <a href="reports.html" class="menu-item">Reports</a>
+</div>
+<!-- Container for ZPL code and barcode preview -->
+<div id="zplAndBarcodeContainer"></div>
+<div id="barcodeContainer">
+    <!-- Item description will be displayed here -->
+    <p id="itemDescription"></p>
+
+    <!-- Container for the barcode -->
+    <canvas id="barcodeCanvas"></canvas></br>
+
+    <!-- Print button -->
+    <br> <button id="printButton">Print Barcode</button>
+</div>
+
+<script>
+    // Get product ID and item description from URL query parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const productId = urlParams.get('productId');
+    const itemDescription = urlParams.get('description');
+
+    // Set item description text
+    document.getElementById('itemDescription').innerText = itemDescription;
+
+    // Function to fetch ZPL code from PHP script and render barcode
+    function fetchZPLAndRenderBarcode(productId) {
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", `generate_barcode.php?productId=${productId}`, true);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    var zplCode = xhr.responseText;
+
+                    // Append ZPL code to the container
+                    var zplContainer = document.getElementById('zplAndBarcodeContainer');
+                    zplContainer.innerHTML = zplCode;
+
+                    // Extract data from ZPL and render barcode on canvas
+                    convertZPLToBarcode(zplCode);
+                } else {
+                    // Handle errors
+                    console.error("Failed to fetch ZPL code:", xhr.statusText);
+                }
+            }
+        };
+        xhr.send();
+    }
+
+    // Call fetchZPLAndRenderBarcode function with the product ID from the URL
+    if (productId) {
+        fetchZPLAndRenderBarcode(productId);
+    } else {
+        console.error("Product ID not found in the URL.");
+    }
+
+    // Function to extract data from ZPL and render barcode
+    function convertZPLToBarcode(zpl) {
+        var barcodeData = extractDataFromZPL(zpl);
+        JsBarcode("#barcodeCanvas", barcodeData, {
+            format: "CODE128",
+            lineColor: "#000",
+            width: 2,
+            height: 100
+        });
+    }
+
+    // Function to extract data from ZPL
+    function extractDataFromZPL(zpl) {
+        // Extracting data between ^FD and ^FS
+        var startIndex = zpl.indexOf("^FD") + 3; // +3 to exclude ^FD
+        var endIndex = zpl.indexOf("^FS");
+        return zpl.substring(startIndex, endIndex);
+    }
+
+    // Print button functionality
+    document.getElementById('printButton').addEventListener('click', function() {
+        // Extract ZPL code from container
+        var zplCode = document.getElementById('zplAndBarcodeContainer').innerText;
+
+        // Send ZPL code to printer via AJAX request
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "generate_barcode.php", true);
+        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    // Handle success
+                    console.log("Barcode printed successfully.");
+                } else {
+                    // Handle errors
+                    console.error("Failed to print barcode:", xhr.statusText);
+                }
+            }
+        };
+        xhr.send("zplCode=" + encodeURIComponent(zplCode));
+    });
+</script>
+
+</body>
+</html>

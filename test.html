@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barcode Viewer</title>
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.0/dist/JsBarcode.all.min.js"></script>
+</head>
+<body>
+<canvas id="barcodeCanvas"></canvas>
+
+<script>
+    var zplCode = "^XA^FO50,50^BCN,100,Y,N,N^FD123456^FS^XZ";
+
+    function extractDataFromZPL(zpl) {
+        // Extracting data between ^FD and ^FS
+        var startIndex = zpl.indexOf("^FD") + 3; // +3 to exclude ^FD
+        var endIndex = zpl.indexOf("^FS");
+        return zpl.substring(startIndex, endIndex);
+    }
+
+    function convertZPLToBarcode(zpl) {
+        var barcodeData = extractDataFromZPL(zpl);
+        JsBarcode("#barcodeCanvas", barcodeData, {
+            format: "CODE128",
+            lineColor: "#000",
+            width: 2,
+            height: 100
+        });
+    }
+
+    convertZPLToBarcode(zplCode);
+</script>
+</body>
+</html>

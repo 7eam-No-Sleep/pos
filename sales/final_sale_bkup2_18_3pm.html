@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Final Sale</title>
+    <link rel="stylesheet" href="../style.css">
+    <script src="printer.js"></script>
+
+
+    <style>
+        body {
+            text-align: center;
+            width: 300px;
+        }
+        .receipt {
+            margin: 0 auto;
+            text-align: right;
+        }
+        ul{
+            text-align: right;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+
+<img width="250" src="../images/HB_logo_white.jpg" alt="Honey-Be's"><p>1102 S. Union St.<br>Suite 4<br>337.4691466</p>
+<p id="receipt">
+<br>Returns are for store credit only<br>with receipt!</br> Must be within 7 days of purchase and <br>with original tags attatched!</p>
+<p id="currentDate"></p>
+<!-- Receipt content -->
+<div class="receipt">
+    <ul id="itemsSold">
+        <!-- Items sold will be dynamically populated here -->
+    </ul>
+    <p><span id="discountReason"></span> Discount: <span id="discountAmount"></span>%</p>
+    <p>Items Total: $<span id="runningTotal"></span></p>
+    <p>Sales Tax: $<span id="salesTax"></span></p>
+    <p>Final Total: $<span id="finalTotal"></span></p>
+    <p>Sales Person: <span id="salesPersonName"></span></p>
+</div>
+<p>Thanks for shopping with us!</p>
+<!-- Removed customer name since it's not available -->
+<p>Customer Number: <span id="customerPhoneNumber"></span></p>
+
+<!-- Button to finalize sale -->
+<button onclick="finishSale()">Finalize Sale and Print Receipt</button><br>
+<button onclick="printReceipt('Receipt content goes here')">Print Receipt</button>
+<button onclick="printToDefaultPrinter('Content to print')">Print</button>
+<script>
+
+
+
+
+    // Paste the JavaScript code here
+    function printToDefaultPrinter(content) {
+        // Open the browser's print dialog
+        window.print();
+    }
+
+    // Function to retrieve the default printer
+    function getDefaultPrinter() {
+        // Implement logic to retrieve the default printer
+        // This can vary depending on the environment (browser, operating system, etc.)
+        // For example, in a browser environment, you might use the window.print() function
+        // or a library like Print.js to handle printing.
+        // In a Node.js environment, you might use a package like printer or printer-js.
+        // Return the default printer object if found, or null if not found.
+        return null; // Placeholder, replace with actual implementation
+    }
+
+    // Function to send content to the printer
+    function sendContentToPrinter(printer, content) {
+        // Implement logic to send content to the specified printer
+        // This can vary depending on the environment and printer interface
+        // For example, in a browser environment, you might use the window.print() function
+        // to print content directly.
+        // In a Node.js environment, you might use a package like printer or printer-js
+        // to send content to the printer via its interface.
+        console.log("Printing content to printer:", content);
+    }
+
+    // Example usage
+    const contentToPrint = "This is the content to be printed.";
+    // printToDefaultPrinter(contentToPrint);
+
+
+
+    // JavaScript code to display the current date
+    const currentDateElement = document.getElementById('currentDate');
+    const currentDate = new Date();
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    const formattedDate = currentDate.toLocaleDateString('en-US', options);
+    currentDateElement.textContent = formattedDate;
+    // Function to print the receipt
+    function printReceipt() {
+        // Get the dynamically generated receipt data from the HTML elements
+        var receiptData = document.getElementById('receipt').innerText.trim();
+
+        // Connect to the Epson printer
+        var printerConnection = connectToPrinter();
+
+        if (printerConnection) {
+            // Instantiate SimpleSerial_Generic with the printer connection
+            var simpleSerial = new SimpleSerial_Generic(null, printerConnection);
+
+            // Send the receipt data to the printer
+            simpleSerial.sendcommand({
+                command: receiptData
+            });
+        }
+    }
+    // Function to finish the sale
+    function finishSale() {
+        // Retrieve proposedSale data from the URL
+        const proposedSaleData = getProposedSaleDataFromURL();
+
+        // Print the receipt
+        //printReceipt();
+
+        // Redirect the user to the update_product_stock.php page with the appended data to the URL
+        window.location.href = `update_product_stock.php?proposedSale=${encodeURIComponent(JSON.stringify(proposedSaleData))}`;
+
+        // Set a timer to redirect back to the sales page after 3 seconds
+        setTimeout(function() {
+            window.location.href = 'sales.html';
+        }, 3000); // 3000 milliseconds = 3 seconds
+
+
+    }
+    // Function to retrieve proposedSale data from the URL
+    function getProposedSaleDataFromURL() {
+        const queryString = window.location.search;
+        console.log("QueryString:", queryString); // Debugging statement
+        const urlParams = new URLSearchParams(queryString);
+        const proposedSaleData = urlParams.get('proposedSale');
+        console.log("Proposed Sale Data:", proposedSaleData); // Debugging statement
+        const decodedData = decodeURIComponent(proposedSaleData);
+        console.log("Decoded Data:", decodedData); // Debugging statement
+        return JSON.parse(decodedData);
+    }
+
+    // Function to populate customer information, items sold, and totals
+    // Function to populate receipt
+    function populateReceipt() {
+        // Retrieve proposedSale data from the URL
+        const proposedSaleData = getProposedSaleDataFromURL();
+
+        // Populate customer information
+        document.getElementById('customerPhoneNumber').textContent = proposedSaleData.customerPhoneNumber;
+
+        // Populate items sold
+        const itemsSoldList = document.getElementById('itemsSold');
+        itemsSoldList.innerHTML = proposedSaleData.items.map(item => `<li>${item.productName} - $${item.price.toFixed(2)}</li>`).join('');
+
+        // Populate totals
+        document.getElementById('runningTotal').textContent = proposedSaleData.runningTotal.toFixed(2);
+        document.getElementById('salesTax').textContent = proposedSaleData.salesTaxTotal.toFixed(2);
+        document.getElementById('discountReason').textContent = proposedSaleData.discountReason; // Display discount reason
+        if (proposedSaleData.discountAmount !== null) {
+            document.getElementById('discountAmount').textContent = proposedSaleData.discountAmount.toFixed(2); // Display discount amount
+        }
+        document.getElementById('finalTotal').textContent = proposedSaleData.finalTotal.toFixed(2);
+
+        // Fetch and populate sales person's name
+        fetchSalesPersonName(proposedSaleData.salesPerson)
+            .then(salesPersonName => {
+                document.getElementById('salesPersonName').textContent = salesPersonName;
+            })
+            .catch(error => {
+                console.error('Error fetching sales person name:', error);
+            });
+    }
+
+    // Function to fetch sales person's name by ID
+    function fetchSalesPersonName(salesPersonID) {
+        return fetch('fetch_sales_person_name.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                salesPersonID: salesPersonID,
+            }),
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    return data.salesPersonName;
+                } else {
+                    throw new Error('Failed to fetch sales person name');
+                }
+            });
+    }
+    // Function to send receipt data to the printer
+    function printReceipt() {
+        // Get the dynamically generated receipt data from the HTML elements
+        var receiptData = document.getElementById('receipt').innerText.trim();
+
+        console.log("Receipt Data:", receiptData); // Debugging statement
+
+        // Connect to the Epson printer
+        var printerConnection = connectToPrinter();
+
+        if (printerConnection) {
+            // Instantiate SimpleSerial_Generic with the printer connection
+            var simpleSerial = new SimpleSerial_Generic(null, printerConnection);
+
+            // Send the receipt data to the printer
+            simpleSerial.sendcommand({
+                command: receiptData
+            });
+        }
+    }
+    function SimpleSerial_Generic(clientConnection, deviceConnection) {
+        this.DEVICE_TYPE = 'type_simple_serial';
+        this.DEVICE_GROUP = 'group_serial';
+
+        this.clientConnection = clientConnection;
+        this.deviceConnection = deviceConnection;
+
+        this.buf = '';
+
+        this.callbackName = 'oncommandreply';
+    }
+
+    SimpleSerial_Generic.prototype = {
+        sendcommand: function(data, sq) {
+            var cmd = data.command;
+            console.log("Command:", cmd); // Debugging statement
+            var cmdLength = cmd.length / 2;
+
+            console.log("Cmd Length:", cmdLength); // Debugging statement
+
+            // Parsing the data sent by the client.
+            var buf = new Buffer(cmdLength);
+            for (var i = 0; i < cmdLength; i++) {
+                var byteData = parseInt(cmd.substring(i * 2, i * 2 + 2), 16);
+                buf.writeUInt8(byteData, i);
+            }
+            // Sending to the serial device.
+            this.deviceConnection.send(buf);
+        },
+
+        onDeviceData: function(value) {
+            // Parsing the data generated by the serial device.
+            for (var i = 0; i < value.length; i++) {
+                for (var j = 0; j < value[i].byteData.length; j++) {
+                    var strData = value[i].byteData[j].toString(16);
+
+                    if (strData.length == 1) {
+                        strData = '0' + strData;
+                    }
+                    this.buf = this.buf + strData;
+                }
+            }
+            // Sending to the client.
+            var data = {
+                "status": "SUCCESS",
+                "data": this.buf
+            };
+            this.clientConnection.send(this.callbackName, data);
+            this.buf = '';
+        }
+    };
+
+    // Function to find the Epson printer device
+    function findEpsonPrinter() {
+        const devices = usb.getDeviceList();
+        console.log(devices);
+        for (let device of devices) {
+            if (device.deviceDescriptor.idVendor === 0x04b8 && device.deviceDescriptor.idProduct === 0x0202) {
+                return device;
+            }
+        }
+        return null;
+    }
+
+    // Function to connect to the Epson printer
+    function connectToPrinter() {
+        const printerDevice = findEpsonPrinter();
+        if (printerDevice) {
+            const printerConnection = printerDevice.open();
+            return printerConnection;
+        } else {
+            console.error('Epson printer not found.');
+            return null;
+        }
+    }
+
+    // Perform the necessary actions to finalize the sale and print the receipt
+    // Placeholder for printing the receipt (you can use a specific library or service for this)
+    // Call the populateReceipt function when the page loads
+    document.addEventListener('DOMContentLoaded', populateReceipt);
+</script>
+
+
+</body>
+</html>

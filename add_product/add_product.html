@@ -1,0 +1,184 @@
+<?php include 'db_status.php'; ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Product</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <script src="add_product.js"></script>
+	<!-- Database Connection Status Indicator
+	<div id="dbStatus"></div>
+	<div id="dbStatusIndicator"></div></br>-->
+	<!-- Menu -->
+	<div class="menu-container">
+		<a href="../sales/sales.html" class="menu-item">Sales</a>
+		<a href="../view_inventory.html" class="menu-item">View Inventory</a>
+		<a href="add_product.html" class="menu-item">Add Product</a>
+		<a href="../view_customers.html" class="menu-item">View Customers</a>
+		<a href="../add_customer/add_customer.html" class="menu-item">Add Customer</a>
+		<a href="transaction_history.html" class="menu-item">Transaction History</a>
+		<a href="reports.html" class="menu-item">Reports</a>
+	</div>
+    <h1>Add Product</h1>
+    <!-- Message area to display success or error messages -->
+    <div id="message"></div>
+    <!-- Form to add a new product -->
+ <form id="addProductForm">
+            <label for="productName">Product Name:</label>
+            <input type="text" id="productName" name="productName" required>
+			
+			<label for="category">Category:</label>
+            <select id="category" name="category">
+				<option value="Tops">Activewear</option>
+				<option value="Bottoms">Activewear</option>
+				<option value="Dresses">Dresses</option>
+				<option value="Shoes">Shoes</option>
+                <option value="Activewear">Activewear</option>
+                <option value="Athletic shorts">Athletic shorts</option>
+                <option value="Backpacks">Backpacks</option>
+                <option value="Bag straps & charms">Bag straps & charms</option>
+        		<option value="Belts">Belts</option>
+        		<option value="Blazers">Blazers</option>
+        		<option value="Boots">Boots</option>
+        		<option value="Bracelets">Bracelets</option>
+        		<option value="Bras">Bras</option>
+        		<option value="Caps">Caps</option>
+        		<option value="Cardigans">Cardigans</option>
+        		<option value="Clutches">Clutches</option>
+        		<option value="Coats">Coats</option>
+        		<option value="Cosplay outfits">Cosplay outfits</option>
+        		<option value="Costumes">Costumes</option>
+        		<option value="Dancewear">Dancewear</option>
+        		<option value="Denim jackets">Denim jackets</option>
+        		<option value="Dresses">Dresses</option>
+        		<option value="Earrings">Earrings</option>
+        		<option value="Evening gowns">Evening gowns</option>
+        		<option value="Flats">Flats</option>
+        		<option value="Flip-flops">Flip-flops</option>
+        		<option value="Formal shirts">Formal shirts</option>
+        		<option value="Formalwear">Formalwear</option>
+        		<option value="Gloves & mittens">Gloves & mittens</option>
+        		<option value="Hair accessories">Hair accessories</option>
+        		<option value="Handbags">Handbags</option>
+        		<option value="Hats">Hats</option>
+        		<option value="Heels">Heels</option>
+        		<option value="Hoodies">Hoodies</option>
+        		<option value="Jackets">Jackets</option>
+        		<option value="Jeans">Jeans</option>
+        		<option value="Jewelry">Jewelry</option>
+        		<option value="Jumpsuits">Jumpsuits</option>
+        		<option value="Keychains">Keychains</option>
+        		<option value="Kimonos">Kimonos</option>
+        		<option value="Leather jackets">Leather jackets</option>
+        		<option value="Leggings">Leggings</option>
+        		<option value="Leotards & tights">Leotards & tights</option>
+        		<option value="Lingerie">Lingerie</option>
+        		<option value="Luggage">Luggage</option>
+        		<option value="Maternity wear">Maternity wear</option>
+        		<option value="Necklaces">Necklaces</option>
+        		<option value="Panties">Panties</option>
+        		<option value="Pants">Pants</option>
+        		<option value="Parkas">Parkas</option>
+        		<option value="Performance wear">Performance wear</option>
+        		<option value="Glasses">Glasses</option>
+        		<option value="Raincoats">Raincoats</option>
+        		<option value="Rings">Rings</option>
+        		<option value="Robes">Robes</option>
+        		<option value="Rompers">Rompers</option>
+        		<option value="Sandals">Sandals</option>
+        		<option value="Sarees">Sarees</option>
+        		<option value="Scarves">Scarves</option>
+        		<option value="School uniforms">School uniforms</option>
+        		<option value="Shawls">Shawls</option>
+        		<option value="Shorts">Shorts</option>
+        		<option value="Skirts">Skirts</option>
+        		<option value="Sleepwear">Sleepwear</option>
+        		<option value="Slippers">Slippers</option>
+        		<option value="Sneakers">Sneakers</option>
+        		<option value="Sports bras">Sports bras</option>
+        		<option value="Sports leggings">Sports leggings</option>
+        		<option value="Sports uniforms">Sports uniforms</option>
+        		<option value="Sportswear">Sportswear</option>
+        		<option value="Spring jackets">Spring jackets</option>
+        		<option value="Stilettos">Stilettos</option>
+        		<option value="Suits">Suits</option>
+        		<option value="Sunglasses">Sunglasses</option>
+        		<option value="Sweaters">Sweaters</option>
+        		<option value="Swimwear">Swimwear</option>
+        		<option value="T-shirts">T-shirts</option>
+        		<option value="Costumes">Costumes</option>
+        		<option value="Tie clips">Tie clips</option>
+        		<option value="Ties & bow ties">Ties & bow ties</option>
+        		<option value="Tote bags">Tote bags</option>
+        		<option value="Tracksuits">Tracksuits</option>
+        		<option value="Traditional clothing">Traditional clothing</option>
+        		<option value="Trench coats">Trench coats</option>
+        		<option value="Umbrellas">Umbrellas</option>
+        		<option value="Uniforms">Uniforms</option>
+        		<option value="Wallets">Wallets</option>
+       	 		<option value="Watches">Watches</option>
+        		<option value="Windbreakers">Windbreakers</option>
+        		<option value="Winter jackets">Winter jackets</option>
+        		<option value="Work uniforms">Work uniforms</option>
+        		<option value="Workout clothes">Workout clothes</option>
+			    <option value="Other">Other</option>
+            </select>
+			
+			<label for="description">Description:</label>
+            <textarea id="description" name="description"></textarea>
+			
+			<label for="material">Material:</label>
+            <textarea id="material" name="material"></textarea>
+			
+			<label for="size">Size:</label>
+            <textarea id="size" name="size"></textarea>
+			
+			<label for="color">Color:</label>
+            <textarea id="color" name="color"></textarea>
+
+            <label for="costPrice">Cost Price:</label>
+            <input type="number" id="costPrice" name="costPrice" step="0.01" required>
+
+            <label for="sellingPrice">Selling Price:</label>
+            <input type="number" id="sellingPrice" name="sellingPrice" step="0.01" required>
+
+            <label for="quantityInStock">Quantity in Stock:</label>
+            <input type="number" id="quantityInStock" name="quantityInStock" required>
+
+	 		<label for="status">Status:</label>
+	 		<select id="status" name="status">
+		 		<option value="Ordered">Activewear</option>
+		 		<option value="In-Stock">Athletic shorts</option>
+		 		<option value="Damaged">Backpacks</option>
+			</select>
+
+
+
+        <!-- Button to Add Product -->
+        <button type="button" onclick="addProduct()">Add Product</button>
+    </form>
+	
+	<!-- Table Container to display inventory data 
+    <div class="products-container"></div>
+	        <table id="productsTable">
+            <thead>
+                <tr>
+                    <th>Product ID</th>
+                    <th>Product Name</th>
+                    <th>Category</th>
+                    <th>Description</th>
+                    <th>Cost</th>
+                    <th>Sale Price</th>
+                    <th>Quantity in Stock</th>
+                </tr>
+            </thead>
+            <tbody id="productsBody"></tbody>
+        </table>
+
+	 <div id="inventoryContainer"></div> -->
+
+</body>
+</html>

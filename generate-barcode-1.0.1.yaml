@@ -1,0 +1,103 @@
+openapi: 3.0.0
+info:
+  title: Tools - Generate Barcode
+  description: Create a printable and scannable barcode in a wide variety of symbologies that cover a broad range of uses cases including product identity, logistics and inventory management.
+  contact: {}
+  version: "1.0.1"
+servers:
+  - url: https://api.zebra.com/v2/tools/barcode/generate
+    variables: {}
+security:
+  - ApiKeyAuth: []
+paths:
+  /:
+    get:
+      tags:
+        - Barcode Generator
+      summary: Create a Barcode
+      description: Generates a barcode from the text provided and returns a PNG image
+      operationId: CreateaBarcode
+      parameters:
+        - name: symbology
+          in: query
+          description: "The barcode symbology. (valid symbology: auspost, azteccode, azteccodecompact, aztecrune, bc412, channelcode, codablockf, code11, code128, code16k, code2of5, code32, code39, code39ext, code49, code93, code93ext, codeone, coop2of5, daft, databarexpanded, databarexpandedcomposite, databarexpandedstacked, databarexpandedstackedcomposite, databarlimited, databarlimitedcomposite, databaromni, databaromnicomposite, databarstacked, databarstackedcomposite, databarstackedomni, databarstackedomnicomposite, databartruncated, databartruncatedcomposite, datalogic2of5, datamatrix, datamatrixrectangular, dotcode, ean13, ean13composite, ean14, ean2, ean5, ean8, ean8composite, flattermarken, gs1-128, gs1-128composite, gs1-cc, gs1datamatrix, gs1datamatrixrectangular, gs1northamericancoupon, gs1qrcode, hanxin, hibcazteccode, hibccodablockf, hibccode128, hibccode39, hibcdatamatrix, hibcdatamatrixrectangular, hibcmicropdf417, hibcpdf417, hibcqrcode, iata2of5, identcode, industrial2of5, interleaved2of5, isbn, ismn, issn, itf14, japanpost, kix, leitcode, matrix2of5, maxicode, micropdf417, microqrcode, msi, onecode, pdf417, pdf417compact, pharmacode2, pharmacode, planet, plessey, posicode, postnet, pzn, qrcode, rationalizedCodabar, raw, royalmail, sscc18, symbol, telepen, telepennumeric, ultracode, upca, upcacomposite, upce, upcecomposite)"
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: string
+            example: code39
+        - name: text
+          in: query
+          description: "The data or text to include in the generated barcode. Usually an error will occur when the barcode symbology cannot support the text provided.  Different symbology allow for numbers only, or alpha-numeric, or uppercase alphabets, and some restrict characters.  For example:  code39 only accepts numbers and uppercase letters."
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: string
+        - name: scaleX
+          in: query
+          description: Sets the x-axis.  Must be an integer > 0. Use with scaleY, if using scale only, leave scaleX & scaleY blank.  Allows proportional changes to the resulting barcode, helpful with linear barcodes to make tall or short.
+          style: form
+          explode: true
+          schema:
+            type: number
+            format: double
+        - name: scaleY
+          in: query
+          description: Sets the y-axis scaling factors.  Must be an integer > 0.  Use with scaleX.
+          style: form
+          explode: true
+          schema:
+            type: number
+            format: double
+        - name: scale
+          in: query
+          description: Sets both the x-axis and the y-axis scaling factors.  Must be an integer > 0.  Use if you want default X & Y, just different size.
+          style: form
+          explode: true
+          schema:
+            type: number
+            format: double
+        - name: rotate
+          in: query
+          description: Rotates the barcode in 90 degree increments (N=normal, I=Inverted 180 degree rotation, R=Clockwise 90 degree rotation, L=Counter-clockwise 90 degree rotation).
+          style: form
+          explode: true
+          schema:
+            type: string
+        - name: includeText
+          in: query
+          description: Allows for the data included in the barcode to be printed in human readable form with the barcode (usually printed text under the linear barcode, this setting is ignored for many 2D symbologies such as qrcode).
+          style: form
+          explode: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          headers: {}
+          content: {}
+        "400":
+          description: Bad Request
+          headers: {}
+          content:
+            image/png:
+              schema: {}
+        "401":
+          description: Unauthorized
+          headers: {}
+          content:
+            image/png:
+              schema: {}
+      deprecated: false
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: apikey
+      description: Your Zebra Savanna application key for usage of this API. See the [Getting Started Guide](https://developer.savanna.zebra.com/getting-started-0) for more details.
+tags:
+  - name: Barcode Generator
+    description: ""

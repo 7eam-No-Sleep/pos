@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Final Sale</title>
+    <link rel="stylesheet" href="../style.css">
+    <script src="printer.js"></script>
+</head>
+
+<body>
+
+<div class="sales-container">
+    <div class="left-half">
+        <!-- Left half content -->
+        <img width="250" src="../images/HB_logo_white.jpg" alt="Honey-Be's">
+        <p>1102 S. Union St.<br>Suite 4<br>337.4691466</p>
+        <p id="receipt">
+            <br>Returns are for store credit only<br>with receipt!</br> Must be within 7 days of purchase and <br>with original tags attached!</p>
+        <p id="currentDate"></p>
+        <div class="receipt">
+            <ul id="itemsSold">
+                <!-- Items sold will be dynamically populated here -->
+            </ul>
+            <p><span id="discountReason"></span> Discount: <span id="discountAmount"></span>%</p>
+            <p>Items Total: $<span id="runningTotal"></span></p>
+            <p>Sales Tax: $<span id="salesTax"></span></p>
+            <p>Final Total: $<span id="finalTotal"></span></p>
+            <p>Sales Person: <span id="salesPersonName"></span></p>
+        </div>
+        <p>Thanks for shopping with us!</p>
+        <!-- Removed customer name since it's not available -->
+        <p>Customer Number: <span id="customerPhoneNumber"></span></p>
+    </div>
+    <div class="right-half">
+        <!-- Right half content -->
+        <!-- Buttons for different payment methods -->
+        <button onclick="toggleCashField()">Cash</button>
+        <button onclick="toggleCheckField()">Check</button>
+        <button onclick="toggleCreditDebitField()">Credit/Debit</button>
+
+        <!-- Cash field -->
+        <div id="cashField" style="display: none;">
+            <label for="cashReceived">Cash Received:</label>
+            <input type="text" id="cashReceived" name="cashReceived">
+            <button onclick="calculateChange()">Calculate Change</button>
+            <p>Change Given: $<span id="changeGiven">0.00</span></p>
+        </div>
+
+        <!-- Check field -->
+        <div id="checkField" style="display: none;">
+            <label for="checkNumber">Check Number:</label>
+            <input type="text" id="checkNumber" name="checkNumber">
+        </div>
+
+        <!-- Credit/Debit fields -->
+        <div id="creditDebitField" style="display: none;">
+            <label for="creditCardNumber">Card Number:</label>
+            <input type="text" id="creditCardNumber" name="creditCardNumber">
+            <label for="expiryDate">Expiry Date:</label>
+            <input type="text" id="expiryDate" name="expiryDate">
+        </div>
+
+        <!-- Buttons to finalize or clear transaction -->
+        <button onclick="confirmAndFinalize()">Finalize Transaction</button></br>
+        <button onclick="clearTransaction()">Clear Transaction</button>
+    </div>
+</div>
+
+<script>
+    // JavaScript code to display the current date
+    const currentDateElement = document.getElementById('currentDate');
+    const currentDate = new Date();
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    const formattedDate = currentDate.toLocaleDateString('en-US', options);
+    currentDateElement.textContent = formattedDate;
+
+    function finishSale() {
+        // Placeholder function for finishing the sale
+        console.log('Sale finished');
+    }
+
+    // Function to handle toggling of cash field
+    function toggleCashField() {
+        const cashField = document.getElementById('cashField');
+        cashField.style.display = cashField.style.display === 'none' ? 'block' : 'none';
+    }
+
+    // Function to handle toggling of check field
+    function toggleCheckField() {
+        const checkField = document.getElementById('checkField');
+        checkField.style.display = checkField.style.display === 'none' ? 'block' : 'none';
+    }
+
+    // Function to handle toggling of credit/debit field
+    function toggleCreditDebitField() {
+        const creditDebitField = document.getElementById('creditDebitField');
+        creditDebitField.style.display = creditDebitField.style.display === 'none' ? 'block' : 'none';
+    }
+
+    // Function to retrieve proposedSale data from the URL
+    function getProposedSaleDataFromURL() {
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        const proposedSaleData = urlParams.get('proposedSale');
+        return JSON.parse(decodeURIComponent(proposedSaleData));
+    }
+
+    // Function to populate receipt
+    function populateReceipt() {
+        // Retrieve proposedSale data from the URL
+        const proposedSaleData = getProposedSaleDataFromURL();
+
+        // Populate customer information
+        document.getElementById('customerPhoneNumber').textContent = proposedSaleData.customerPhoneNumber;
+
+        // Populate items sold
+        const itemsSoldList = document.getElementById('itemsSold');
+        itemsSoldList.innerHTML = proposedSaleData.items.map(item => `<li>${item.productName} - $${item.price.toFixed(2)}</li>`).join('');
+
+        // Populate totals
+        document.getElementById('runningTotal').textContent = proposedSaleData.runningTotal.toFixed(2);
+        document.getElementById('salesTax').textContent = proposedSaleData.salesTaxTotal.toFixed(2);
+        document.getElementById('discountReason').textContent = proposedSaleData.discountReason; // Display discount reason
+        if (proposedSaleData.discountAmount !== null) {
+            document.getElementById('discountAmount').textContent = proposedSaleData.discountAmount.toFixed(2); // Display discount amount
+        }
+        document.getElementById('finalTotal').textContent = proposedSaleData.finalTotal.toFixed(2);
+
+        // Fetch and populate sales person's name
+        fetchSalesPersonName(proposedSaleData.salesPerson)
+            .then(salesPersonName => {
+                document.getElementById('salesPersonName').textContent = salesPersonName;
+            })
+            .catch(error => {
+                console.error('Error fetching sales person name:', error);
+            });
+    }
+
+    // Function to fetch sales person's name by ID
+    function fetchSalesPersonName(salesPersonID) {
+        return fetch('fetch_sales_person_name.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                salesPersonID: salesPersonID,
+            }),
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    return data.salesPersonName;
+                } else {
+                    throw new Error('Failed to fetch sales person name');
+                }
+            });
+    }
+
+    // Function to handle the Finalize Transaction button click event
+    function confirmAndFinalize() {
+        if (confirm("Are you sure you want to finalize the transaction?")) {
+            // Here, you can perform finalization tasks such as recording transaction information in the database.
+            finalizeTransaction();
+        }
+    }
+
+    // Function to handle the Clear Transaction button click event
+    function clearTransaction() {
+        if (confirm("Are you sure you want to clear the transaction?")) {
+            // Here, you can redirect back to the previous screen or perform any other necessary tasks.
+            window.history.back();
+        }
+    }
+
+    // Function to finalize the transaction (placeholder)
+    function finalizeTransaction() {
+        // Retrieve proposedSale data from the URL
+        const proposedSaleData = getProposedSaleDataFromURL();
+
+        // Prepare transaction data to be sent to the server
+        const transactionData = {
+            SaleID: proposedSaleData.saleID,
+            CustomerID: proposedSaleData.customerID,
+            TransactionDate: getCurrentDate(),
+            PaymentMethod: proposedSaleData.paymentMethod,
+            TotalAmount: proposedSaleData.finalTotal,
+            CashReceived: proposedSaleData.paymentMethod === 'cash' ? parseFloat(document.getElementById('cashReceived').value) : null,
+            ChangeGiven: proposedSaleData.paymentMethod === 'cash' ? parseFloat(document.getElementById('changeGiven').textContent) : null,
+            CheckNumber: proposedSaleData.paymentMethod === 'check' ? document.getElementById('checkNumber').value : null,
+            CreditCardNumber: proposedSaleData.paymentMethod === 'credit_debit' ? document.getElementById('creditCardNumber').value : null,
+            ExpiryDate: proposedSaleData.paymentMethod === 'credit_debit' ? document.getElementById('expiryDate').value : null
+        };
+
+        // Make an AJAX request to record transaction information in the database
+        fetch('record_transaction.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(transactionData)
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Handle successful response
+                console.log('Transaction recorded successfully:', data);
+                // Redirect back to the previous screen
+                window.location.href = 'sales.html';
+            })
+            .catch(error => {
+                console.error('Error recording transaction:', error);
+            });
+    }
+
+    // Function to get the current date in YYYY-MM-DD format
+    function getCurrentDate() {
+        const currentDate = new Date();
+        const year = currentDate.getFullYear();
+        const month = String(currentDate.getMonth() + 1).padStart(2, '0'); // January is 0
+        const day = String(currentDate.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    }
+
+    // Function to calculate change
+    function calculateChange() {
+        const cashReceived = parseFloat(document.getElementById('cashReceived').value);
+        const finalTotal = parseFloat(document.getElementById('finalTotal').textContent);
+        const change = cashReceived - finalTotal;
+        document.getElementById('changeGiven').textContent = change.toFixed(2);
+    }
+
+    // Call the populateReceipt function when the page loads
+    document.addEventListener('DOMContentLoaded', populateReceipt);
+</script>
+
+
+</body>
+</html>
