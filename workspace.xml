@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="e373fa12-f9ec-41ab-9665-4df301b18abc" name="Changes" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ComposerSettings" synchronizationState="SYNCHRONIZE">
+    <pharConfigPath>$PROJECT_DIR$/composer.json</pharConfigPath>
+    <execution />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="HTML File" />
+        <option value="JavaScript File" />
+      </list>
+    </option>
+  </component>
+  <component name="PhpDebugGeneral" listening_started="true" />
+  <component name="PhpWorkspaceProjectConfiguration" interpreter_name="C:\Program Files\xampp\php\php.exe">
+    <include_path>
+      <path value="$PROJECT_DIR$/vendor/composer" />
+      <path value="$PROJECT_DIR$/vendor/mike42/escpos-php" />
+      <path value="$PROJECT_DIR$/vendor/mike42/gfx-php" />
+    </include_path>
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 7
+}</component>
+  <component name="ProjectId" id="2bmfOkbynhEanvQ4XLvwqhrBNqs" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;JavaScript Debug.add_customer.html.executor&quot;: &quot;Run&quot;,
+    &quot;JavaScript Debug.add_product.html.executor&quot;: &quot;Run&quot;,
+    &quot;JavaScript Debug.index.html.executor&quot;: &quot;Run&quot;,
+    &quot;JavaScript Debug.sales.html.executor&quot;: &quot;Run&quot;,
+    &quot;JavaScript Debug.test.html.executor&quot;: &quot;Run&quot;,
+    &quot;JavaScript Debug.view_inventory.html.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Program Files/xampp/htdocs/HB Pos/sales&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Program Files\xampp\htdocs\HB Pos\sales" />
+      <recent name="C:\Program Files\xampp\htdocs\HB Pos" />
+      <recent name="C:\Program Files\xampp\htdocs\HB Pos\edit_product" />
+      <recent name="C:\Program Files\xampp\htdocs\HB Pos\add_product" />
+      <recent name="C:\Program Files\xampp\htdocs\HB Pos\add_customer" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Program Files\xampp\htdocs\HB Pos\sales" />
+      <recent name="C:\Program Files\xampp\htdocs\HB Pos\resources" />
+      <recent name="C:\Program Files\xampp\htdocs\HB Pos" />
+      <recent name="C:\Program Files\xampp\htdocs\HB Pos\add_product" />
+      <recent name="C:\Program Files\xampp\htdocs\HB Pos\add_customer" />
+    </key>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="e373fa12-f9ec-41ab-9665-4df301b18abc" name="Changes" comment="" />
+      <created>1706825144278</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1706825144278</updated>
+      <workItem from="1706825145336" duration="18615000" />
+      <workItem from="1706912065317" duration="1521000" />
+      <workItem from="1707250020252" duration="11389000" />
+      <workItem from="1707426542565" duration="15016000" />
+      <workItem from="1707755796366" duration="1236000" />
+      <workItem from="1707757058247" duration="9806000" />
+      <workItem from="1707925144547" duration="5615000" />
+      <workItem from="1708096429274" duration="803000" />
+      <workItem from="1708097275074" duration="15138000" />
+      <workItem from="1708192855162" duration="17001000" />
+      <workItem from="1708219991479" duration="38246000" />
+      <workItem from="1708370711606" duration="4648000" />
+      <workItem from="1708545496536" duration="3000" />
+      <workItem from="1708546309983" duration="310000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>
